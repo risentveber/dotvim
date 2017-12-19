@@ -196,3 +196,4 @@ function! GotoJump()
   endif
 endfunction
 nmap <space>j :call GotoJump()<CR>
+map <space>d :NERDTreeToggle<CR>
