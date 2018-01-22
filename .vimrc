@@ -42,6 +42,8 @@ Plugin 'wavded/vim-stylus'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'ternjs/tern_for_vim'
 Plugin 'gioele/vim-autoswap'
+Plugin 'rstacruz/vim-hyperstyle'
+Plugin 'lyokha/vim-xkbswitch'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -53,6 +55,12 @@ Plugin 'w0rp/ale'
 Plugin 'SirVer/ultisnips'
 Plugin 'ervandew/supertab'
 Plugin 'honza/vim-snippets'
+" set langmap=ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕHГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
+set iminsert=0
+set imsearch=0
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+" highlight lCursor guifg=NONE guibg=Cyan
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -83,11 +91,17 @@ let g:ale_lint_on_enter = 1
 let g:ale_fixers = {
 \  'javascript': ['eslint']
 \}
+let g:ale_linters = {
+\  'javascript': ['eslint']
+\}
 " These are the tweaks I apply to YCM's config, you don't need them but they might help.
 " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
-let g:syntastic_javascript_checkers = ['eslint']
+let g:ycm_semantic_triggers = {
+    \   'css,less,stylus': [ 're!^\s{2}', 're!:\s+' ],
+    \ }
+let g:tern_show_argument_hints='on_hold'
 set completeopt-=preview
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -95,7 +109,6 @@ set completeopt-=preview
 Plugin 'wincent/command-t'
 Plugin 'scrooloose/nerdtree'
 Plugin 'isRuslan/vim-es6'
-"lugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 let g:path_to_matcher = "/usr/local/bin/matcher"
@@ -143,7 +156,13 @@ let NERDTreeIgnore = ['\.swp$','.git$']
 
 autocmd BufEnter *.js,*.jsx,*.css set colorcolumn=80
 autocmd BufEnter *.jade set syntax=pug
-autocmd BufEnter *.styl set syntax=stylus
+autocmd BufEnter *.styl  call SetStylOptions()
+function SetStylOptions()
+  set syntax=stylus
+  set filetype=stylus
+  set omnifunc=csscomplete#CompleteCSS
+endfunction
+
 highlight ColorColumn ctermbg=9
 
 " To ignore plugin indent changes, instead use:
@@ -197,3 +216,4 @@ function! GotoJump()
 endfunction
 nmap <space>j :call GotoJump()<CR>
 map <space>d :NERDTreeToggle<CR>
+highlight Cursor guifg=NONE guibg=Green
