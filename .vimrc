@@ -14,6 +14,7 @@ set list
 set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,nbsp:~
 let NERDTreeShowHidden=1
 set suffixesadd=.js,.ts,.jsx
+set path+=$PWD/node_modules
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
@@ -88,6 +89,7 @@ let g:ale_fixers = {
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
 let g:syntastic_javascript_checkers = ['eslint']
+let g:ternServerTimeout=1000
 set completeopt-=preview
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -178,6 +180,7 @@ autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
 autocmd bufwritepost .vimrc source $MYVIMRC
 let g:airline_theme='papercolor'
 nnoremap <space>f :NERDTreeFind<CR>
+nmap fu :Ag <cword> --js <CR>
 nnoremap <space>n :noh<CR>
 set clipboard=unnamed
 set hlsearch
