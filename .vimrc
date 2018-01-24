@@ -56,7 +56,7 @@ Plugin 'w0rp/ale'
 Plugin 'SirVer/ultisnips'
 Plugin 'ervandew/supertab'
 Plugin 'honza/vim-snippets'
-" set langmap=ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕHГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>
+Plugin 'JamshedVesuna/vim-markdown-preview'
 set iminsert=0
 set imsearch=0
 let g:XkbSwitchEnabled = 1
@@ -78,13 +78,42 @@ let NERDTreeDirArrows = 1
 let NERDTreeMinimalUI = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_browser='Google Chrome'
 "CtrlP
 if executable('ag')
   " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " let g:ctrlp_user_command = 'ag %s -l  -g ""'
 endif
+let g:path_to_matcher = "/usr/local/bin/matcher"
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+" let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files . -co --exclude-standard']
+let g:ctrlp_match_func = { 'match': 'GoodMatch' }
+
+function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
+  let cachefile = ctrlp#utils#cachedir().'/matcher.cache'
+  if !( filereadable(cachefile) && a:items == readfile(cachefile) )
+    call writefile(a:items, cachefile)
+  endif
+  if !filereadable(cachefile)
+    return []
+  endif
+
+  " a:mmode is currently ignored. In the future, we should probably do
+  " something about that. the matcher behaves like "full-line".
+  let cmd = g:path_to_matcher.' --manifest '.cachefile.' '
+  " let cmd = g:path_to_matcher.' --limit '.a:limit.' --manifest '.cachefile.' '
+  " if !( exists('g:ctrlp_dotfiles') && g:ctrlp_dotfiles )
+  "   let cmd = cmd.'--no-dotfiles '
+  " endif
+  let cmd = cmd.a:str
+
+  return split(system(cmd), "\n")
+
+endfunction
+
 let g:ale_sign_error = ''
 let g:ale_sign_warning = ''
 let g:ale_fix_on_save = 1
@@ -113,34 +142,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'isRuslan/vim-es6'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-let g:path_to_matcher = "/usr/local/bin/matcher"
 
-let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files . -co --exclude-standard']
-
-let g:ctrlp_match_func = { 'match': 'GoodMatch' }
-
-function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
-
-  " Create a cache file if not yet exists
-  let cachefile = ctrlp#utils#cachedir().'/matcher.cache'
-  if !( filereadable(cachefile) && a:items == readfile(cachefile) )
-    call writefile(a:items, cachefile)
-  endif
-  if !filereadable(cachefile)
-    return []
-  endif
-
-  " a:mmode is currently ignored. In the future, we should probably do
-  " something about that. the matcher behaves like "full-line".
-  let cmd = g:path_to_matcher.' --limit '.a:limit.' --manifest '.cachefile.' '
-  if !( exists('g:ctrlp_dotfiles') && g:ctrlp_dotfiles )
-    let cmd = cmd.'--no-dotfiles '
-  endif
-  let cmd = cmd.a:str
-
-  return split(system(cmd), "\n")
-
-endfunction
 " Plugin 'file:///home/gmarik/path/to/plugin'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
@@ -156,7 +158,7 @@ filetype plugin indent on    " required
 
 let NERDTreeIgnore = ['\.swp$','.git$']
 
-autocmd BufEnter *.js,*.jsx,*.css set colorcolumn=80
+set colorcolumn=80
 autocmd BufEnter *.jade set syntax=pug
 autocmd BufEnter *.styl  call SetStylOptions()
 function SetStylOptions()
@@ -177,13 +179,11 @@ highlight ColorColumn ctermbg=9
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for FAQ
-let g:ctrlp_max_files=0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:airline_left_sep = '»'
 let g:airline_left_sep = ''
 let g:airline_right_sep = '«'
 let g:airline_right_sep = ''
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 syntax enable
 set background=dark
 let NERDTreeStatusline = "%{ getcwd() }"
@@ -196,6 +196,7 @@ hi GitGutterDelete cterm=none ctermfg=160 ctermbg=0
 
 colorscheme gruvbox
 autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
+autocmd VimEnter * wincmd p
 autocmd bufwritepost .vimrc source $MYVIMRC
 let g:airline_theme='papercolor'
 nnoremap <space>f :NERDTreeFind<CR>
