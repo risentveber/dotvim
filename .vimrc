@@ -1,6 +1,4 @@
 set exrc
-set nocompatible              " be iMproved, required
-filetype plugin on                  " required
 runtime ftplugin/man.vim
 set number
 set cursorline
@@ -16,6 +14,7 @@ let NERDTreeShowHidden=1
 set suffixesadd=.js,.ts,.jsx
 set path+=$PWD/node_modules
 set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/go/bin
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
@@ -45,6 +44,9 @@ Plugin 'ternjs/tern_for_vim'
 Plugin 'gioele/vim-autoswap'
 Plugin 'rstacruz/vim-hyperstyle'
 Plugin 'lyokha/vim-xkbswitch'
+Plugin 'tomlion/vim-solidity'
+Plugin 'fatih/vim-go'
+Plugin 'equalsraf/neovim-gui-shim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -79,6 +81,7 @@ let NERDTreeMinimalUI = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDSpaceDelims = 1
 let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_github=1
 let vim_markdown_preview_browser='Google Chrome'
 "CtrlP
 if executable('ag')
@@ -114,15 +117,19 @@ function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
 
 endfunction
 
-let g:ale_sign_error = ''
-let g:ale_sign_warning = ''
+" let g:ale_sign_error = ''
+" let g:ale_sign_warning = ''
+let g:go_auto_type_info = 1
+let g:ale_sign_error = '⤫'
+let g:ale_sign_warning = '⚠'
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_enter = 1
 let g:ale_fixers = {
 \  'javascript': ['eslint']
 \}
 let g:ale_linters = {
-\  'javascript': ['eslint']
+\  'javascript': ['eslint'],
+\  'go': ['gometalinter', 'gofmt']
 \}
 " These are the tweaks I apply to YCM's config, you don't need them but they might help.
 " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
@@ -160,6 +167,7 @@ let NERDTreeIgnore = ['\.swp$','.git$']
 
 set colorcolumn=80
 autocmd BufEnter *.jade set syntax=pug
+autocmd BufEnter *.sol set syntax=solidity
 autocmd BufEnter *.styl  call SetStylOptions()
 function SetStylOptions()
   set syntax=stylus
