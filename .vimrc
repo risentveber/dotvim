@@ -168,8 +168,8 @@ let NERDTreeIgnore = ['\.swp$','.git$']
 set colorcolumn=80
 autocmd BufEnter *.jade set syntax=pug
 autocmd BufEnter *.sol set syntax=solidity
-autocmd BufEnter *.styl  call SetStylOptions()
-function SetStylOptions()
+autocmd BufEnter *.styl  call SetMyStylOptions()
+function SetMyStylOptions()
   set syntax=stylus
   set filetype=stylus
   set omnifunc=csscomplete#CompleteCSS
@@ -229,3 +229,4 @@ endfunction
 nmap <space>j :call GotoJump()<CR>
 map <space>d :NERDTreeToggle<CR>
 highlight Cursor guifg=NONE guibg=Green
+set termguicolors
