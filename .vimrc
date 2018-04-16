@@ -31,6 +31,7 @@ set shiftround              " drop unused spaces
 " let Vundle manage Vundle, required
 Plugin 'airblade/vim-gitgutter'
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'christianrondeau/vim-base64'
 Plugin 'morhetz/gruvbox'
 Plugin 'rking/ag.vim'
 Plugin 'tpope/vim-repeat'
@@ -163,7 +164,7 @@ Plugin 'Raimondi/delimitMate'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-let NERDTreeIgnore = ['\.swp$','.git$']
+let NERDTreeIgnore = ['.DS_Store','\.swp$','.git$']
 
 set colorcolumn=80
 autocmd BufEnter *.jade set syntax=pug
@@ -208,7 +209,7 @@ autocmd VimEnter * wincmd p
 autocmd bufwritepost .vimrc source $MYVIMRC
 let g:airline_theme='papercolor'
 nnoremap <space>f :NERDTreeFind<CR>
-nmap fu :Ag <cword> --js <CR>
+nmap fu :Ag <cword> <CR>
 nnoremap <space>n :noh<CR>
 set clipboard=unnamed
 set hlsearch
