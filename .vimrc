@@ -29,6 +29,8 @@ set tabstop=4
 set softtabstop=4           " tab like 4 spaces
 set shiftround              " drop unused spaces
 " let Vundle manage Vundle, required
+Plugin 'rust-lang/rust.vim'
+Plugin 'udalov/kotlin-vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'christianrondeau/vim-base64'
@@ -92,7 +94,7 @@ if executable('ag')
   " let g:ctrlp_user_command = 'ag %s -l  -g ""'
 endif
 let g:path_to_matcher = "/usr/local/bin/matcher"
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|.git'
 " let g:ctrlp_user_command = ['.git/', 'cd %s && git ls-files . -co --exclude-standard']
 let g:ctrlp_match_func = { 'match': 'GoodMatch' }
 
@@ -117,10 +119,9 @@ function! GoodMatch(items, str, limit, mmode, ispath, crfile, regex)
   return split(system(cmd), "\n")
 
 endfunction
-
-" let g:ale_sign_error = ''
-" let g:ale_sign_warning = ''
-let g:go_auto_type_info = 1
+" let g:go_def_mode = 'godef'
+" le g:go_build_tags= ['unix']
+" let g:go_auto_type_info = 1
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 let g:ale_fix_on_save = 1
@@ -227,6 +228,16 @@ function! GotoJump()
     endif
   endif
 endfunction
+function! GoToURL()
+  let s:uri = matchstr(getline("."), '[a-z]*:\/\/[^ >,;]*')
+  echo s:uri
+  if s:uri != ""
+    silent exec "!open -a \"Google Chrome\" '".s:uri."'"
+  else
+    echo "No URI found in line."
+  endif
+endfunction
+map <leader>u :call GoToURL()<CR>
 nmap <space>j :call GotoJump()<CR>
 map <space>d :NERDTreeToggle<CR>
 highlight Cursor guifg=NONE guibg=Green
