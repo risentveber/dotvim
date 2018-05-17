@@ -49,7 +49,9 @@ Plugin 'rstacruz/vim-hyperstyle'
 Plugin 'lyokha/vim-xkbswitch'
 Plugin 'tomlion/vim-solidity'
 Plugin 'fatih/vim-go'
+Plugin 'cespare/vim-toml'
 Plugin 'equalsraf/neovim-gui-shim'
+Plugin 'chr4/nginx.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
@@ -189,6 +191,7 @@ highlight ColorColumn ctermbg=9
 " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 "
 " see :h vundle for more details or wiki for FAQ
+let g:rustfmt_autosave = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 let g:airline_left_sep = '»'
 let g:airline_left_sep = ''
