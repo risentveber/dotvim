@@ -139,7 +139,7 @@ let g:ale_linters = {
 " YCM gives you popups and splits by default that some people might not like, so these should tidy it up a bit for you.
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
-let g:ternServerTimeout=1000
+let g:ternServerTimeout=5
 let g:ycm_semantic_triggers = {
     \   'css,less,stylus': [ 're!^\s{2}', 're!:\s+' ],
     \ }
@@ -246,3 +246,8 @@ xnoremap p pgvy
 highlight Cursor guifg=NONE guibg=Green
 set termguicolors
 autocmd FileType javascript noremap <buffer> gd :TernDef<CR>
+noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
+
+autocmd BufRead .babelrc set filetype=json
+autocmd BufRead .eslintrc set filetype=json
+autocmd BufRead .tslintrc set filetype=json
