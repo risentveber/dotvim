@@ -162,6 +162,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
 " autocmd VimEnter * NERDTree | wincmd p
+Plugin 'tpope/vim-abolish'
 Plugin 'Raimondi/delimitMate'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -193,9 +194,7 @@ highlight ColorColumn ctermbg=9
 " see :h vundle for more details or wiki for FAQ
 let g:rustfmt_autosave = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-let g:airline_left_sep = '»'
 let g:airline_left_sep = ''
-let g:airline_right_sep = '«'
 let g:airline_right_sep = ''
 syntax enable
 set background=dark
@@ -206,7 +205,7 @@ hi GitGutterAdd cterm=none ctermbg=2
 hi GitGutterChange cterm=none ctermbg=4
 hi GitGutterChangeDelete cterm=none ctermbg=4
 hi GitGutterDelete cterm=none ctermfg=160 ctermbg=0
-
+let g:ale_javascript_eslint_use_global = 0
 colorscheme gruvbox
 autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
 autocmd VimEnter * wincmd p
@@ -243,5 +242,7 @@ endfunction
 map <leader>u :call GoToURL()<CR>
 nmap <space>j :call GotoJump()<CR>
 map <space>d :NERDTreeToggle<CR>
+xnoremap p pgvy
 highlight Cursor guifg=NONE guibg=Green
 set termguicolors
+autocmd FileType javascript noremap <buffer> gd :TernDef<CR>
