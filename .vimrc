@@ -200,6 +200,7 @@ noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 xnoremap p pgvy
 "AUTOCOMMANDS===================================================================
 command! W w
+command! FJ %!python -m json.tool
 augroup configgroup
     autocmd!
     autocmd BufWritePre * %s/\s\+$//e
