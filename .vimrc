@@ -110,6 +110,7 @@ let g:ale_lint_on_enter = 1
 let g:ale_linters = { 'javascript': ['eslint'], 'go': ['gometalinter', 'gofmt'] }
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
+let g:ag_working_path_mode = 'r'
 let g:ctrlp_match_func = { 'match': 'CustomMatch' }
 let g:path_to_matcher = '/usr/local/bin/matcher'
 let g:ternServerTimeout=5
@@ -166,6 +167,7 @@ function! GotoJump()
     endif
   endif
 endfunction
+
 function! GoToURL()
   let s:uri = matchstr(getline('.'), '[a-z]*:\/\/[^ >,;]*')
   echo s:uri
@@ -175,6 +177,18 @@ function! GoToURL()
     echo 'No URI found in line.'
   endif
 endfunction
+
+function! CustomizeYCM(key, val)
+    let a:val.word = substitute(a:val.word, '.js\(x\)\?$',"","")
+    return a:val
+endfunction
+" Need for completion customization
+" let response = s:Pyeval( 'ycm_state.GetCompletionResponse()' )
+" let s:completion = {
+"       \   'start_column': response.completion_start_column,
+"       \   'candidates': map(response.completions, function('CustomizeYCM'))
+"       \ }
+" call s:Complete()
 
 "HIGLIGHT=======================================================================
 hi AleErrorSign cterm=none ctermfg=160 ctermbg=0
@@ -195,12 +209,14 @@ nnoremap <space>n :noh<CR>
 nnoremap fu :Ag <cword> <CR>
 noremap <leader>u :call GoToURL()<CR>
 nnoremap <space><space> za
+nnoremap gr :GoReferrers<CR>
 noremap <space>d :NERDTreeToggle<CR>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 xnoremap p pgvy
 
 "COMMANDS=======================================================================
 command! W w
+command! Q q
 command! FJ %!python -m json.tool
 
 "AUTOCOMMANDS===================================================================
