@@ -1,48 +1,47 @@
 "PLUGINS========================================================================
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'JamshedVesuna/vim-markdown-preview'
-Plugin 'Raimondi/delimitMate'
-Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'alvan/vim-closetag'
-Plugin 'bling/vim-airline'
-Plugin 'cespare/vim-toml'
-Plugin 'chr4/nginx.vim'
-Plugin 'christianrondeau/vim-base64'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'digitaltoad/vim-pug'
-Plugin 'equalsraf/neovim-gui-shim'
-Plugin 'ervandew/supertab'
-Plugin 'fatih/vim-go'
-Plugin 'gioele/vim-autoswap'
-Plugin 'honza/vim-snippets'
-Plugin 'iamcco/go-to-file.vim'
-Plugin 'isRuslan/vim-es6'
-Plugin 'lyokha/vim-xkbswitch'
-Plugin 'mbbill/undotree'
-Plugin 'morhetz/gruvbox'
-Plugin 'rking/ag.vim'
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plugin 'rstacruz/vim-hyperstyle'
-Plugin 'rust-lang/rust.vim'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'ternjs/tern_for_vim'
-Plugin 'tomlion/vim-solidity'
-Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'udalov/kotlin-vim'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'w0rp/ale'
-Plugin 'wavded/vim-stylus'
-Plugin 'wincent/command-t'
-call vundle#end()            " required
+call plug#begin('~/.vim/bundle')
+Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'Raimondi/delimitMate'
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/YouCompleteMe'
+Plug 'VundleVim/Vundle.vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'altercation/vim-colors-solarized'
+Plug 'alvan/vim-closetag'
+Plug 'bling/vim-airline'
+Plug 'cespare/vim-toml'
+Plug 'chr4/nginx.vim'
+Plug 'christianrondeau/vim-base64'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'digitaltoad/vim-pug'
+Plug 'equalsraf/neovim-gui-shim'
+Plug 'ervandew/supertab'
+Plug 'fatih/vim-go'
+Plug 'gioele/vim-autoswap'
+Plug 'honza/vim-snippets'
+Plug 'iamcco/go-to-file.vim'
+Plug 'isRuslan/vim-es6'
+Plug 'lyokha/vim-xkbswitch'
+Plug 'mbbill/undotree'
+Plug 'morhetz/gruvbox'
+Plug 'rking/ag.vim'
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
+Plug 'rstacruz/vim-hyperstyle'
+Plug 'rust-lang/rust.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'ternjs/tern_for_vim'
+Plug 'tomlion/vim-solidity'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'udalov/kotlin-vim'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'wavded/vim-stylus'
+Plug 'wincent/command-t'
+call plug#end()
 
 "OPTIONS========================================================================
 colorscheme gruvbox
@@ -114,6 +113,7 @@ let g:ag_working_path_mode = 'r'
 let g:ctrlp_match_func = { 'match': 'CustomMatch' }
 let g:path_to_matcher = '/usr/local/bin/matcher'
 let g:ternServerTimeout=5
+let g:tern_request_timeout = 5
 let g:tern_show_argument_hints='on_hold'
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
@@ -199,6 +199,7 @@ hi GitGutterChangeDelete cterm=none ctermbg=4
 hi GitGutterDelete cterm=none ctermfg=160 ctermbg=0
 hi Cursor guifg=NONE guibg=Green
 hi ColorColumn ctermbg=9
+hi TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 
 "KEYMAPPINGS====================================================================
 nnoremap <leader>a :Ag<space>
@@ -213,6 +214,10 @@ nnoremap gr :GoReferrers<CR>
 noremap <space>d :NERDTreeToggle<CR>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 xnoremap p pgvy
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-v><Esc> <Esc>
+endif
 
 "COMMANDS=======================================================================
 command! W w
