@@ -1,45 +1,44 @@
 "PLUGINS========================================================================
 call plug#begin('~/.vim/bundle')
-Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
 Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe'
-Plug 'VundleVim/Vundle.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'alvan/vim-closetag'
 Plug 'bling/vim-airline'
-Plug 'cespare/vim-toml'
-Plug 'chr4/nginx.vim'
+Plug 'cespare/vim-toml', { 'for': 'toml' }
+Plug 'chr4/nginx.vim', { 'for': 'nginx' }
 Plug 'christianrondeau/vim-base64'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'digitaltoad/vim-pug'
+Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'ervandew/supertab'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'gioele/vim-autoswap'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/go-to-file.vim'
-Plug 'isRuslan/vim-es6'
+Plug 'isRuslan/vim-es6', { 'for': 'javascript' }
 Plug 'lyokha/vim-xkbswitch'
 Plug 'mbbill/undotree'
 Plug 'morhetz/gruvbox'
 Plug 'rking/ag.vim'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'rstacruz/vim-hyperstyle'
-Plug 'rust-lang/rust.vim'
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'ternjs/tern_for_vim'
-Plug 'tomlion/vim-solidity'
+Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'udalov/kotlin-vim'
+Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
-Plug 'wavded/vim-stylus'
+Plug 'wavded/vim-stylus', { 'for': 'styl' }
 Plug 'wincent/command-t'
 call plug#end()
 
@@ -90,7 +89,8 @@ let g:NERDSpaceDelims = 1
 let g:NERDTreeDirArrows = 1
 let g:NERDTreeIgnore = ['.DS_Store','\.swp$','.git$']
 let g:NERDTreeMinimalUI = 1
-let g:NERDTreeStatusline = '%{ getcwd() }'
+let g:NERDTreeStatusline = 'NERD'
+" let g:NERDTreeStatusline = '%{ getcwd() }'
 let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsEditSplit='vertical'
 let g:UltiSnipsExpandTrigger='<tab>'
