@@ -38,7 +38,7 @@ Plug 'tpope/vim-surround'
 Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
-Plug 'wavded/vim-stylus', { 'for': 'styl' }
+Plug 'wavded/vim-stylus', { 'for': 'stylus' }
 Plug 'wincent/command-t'
 call plug#end()
 
@@ -112,7 +112,6 @@ let g:ale_sign_warning = '⚠'
 let g:ag_working_path_mode = 'r'
 let g:ctrlp_match_func = { 'match': 'CustomMatch' }
 let g:path_to_matcher = '/usr/local/bin/matcher'
-let g:ternServerTimeout=5
 let g:tern_request_timeout = 5
 let g:tern_show_argument_hints='on_hold'
 let g:ycm_add_preview_to_completeopt=0
@@ -179,6 +178,9 @@ function! GoToURL()
 endfunction
 
 function! CustomizeYCM(key, val)
+    if type(a:val) == v:t_string
+        return a:val
+    endif
     let a:val.word = substitute(a:val.word, '.js\(x\)\?$',"","")
     return a:val
 endfunction
@@ -212,6 +214,7 @@ noremap <leader>u :call GoToURL()<CR>
 nnoremap <space><space> za
 nnoremap gr :GoReferrers<CR>
 noremap <space>d :NERDTreeToggle<CR>
+noremap <leader>e :ALENext<cr>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 xnoremap p pgvy
 if has('nvim')
