@@ -225,7 +225,7 @@ endif
 "COMMANDS=======================================================================
 command! W w
 command! Q q
-command! FJ %!python -m json.tool
+command! FJ %!jq '.'
 
 "AUTOCOMMANDS===================================================================
 augroup configgroup
