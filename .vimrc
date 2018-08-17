@@ -215,6 +215,7 @@ nnoremap <space><space> za
 nnoremap gr :GoReferrers<CR>
 noremap <space>d :NERDTreeToggle<CR>
 noremap <leader>e :ALENext<cr>
+noremap <leader>cf :let @+ = expand("%")<cr>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 xnoremap p pgvy
 if has('nvim')
