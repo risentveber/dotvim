@@ -106,7 +106,7 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_javascript_eslint_use_global = 0
 let g:ale_lint_on_enter = 1
-let g:ale_linters = { 'javascript': ['eslint'], 'go': ['gometalinter', 'gofmt'] }
+let g:ale_linters = { 'javascript': ['eslint'], 'go': ['gofmt', 'govet', 'golint'] }
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 let g:ag_working_path_mode = 'r'
@@ -122,6 +122,7 @@ let g:ycm_semantic_triggers = { 'css,less,stylus': [ 're!^\s{2}', 're!:\s+' ] }
 let vim_markdown_preview_browser='Google Chrome'
 let vim_markdown_preview_github=1
 let vim_markdown_preview_hotkey='<C-m>'
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
@@ -193,14 +194,15 @@ endfunction
 " call s:Complete()
 
 "HIGLIGHT=======================================================================
-hi AleErrorSign cterm=none ctermfg=160 ctermbg=0
-hi AleWarningSign cterm=none ctermfg=220 ctermbg=0
-hi GitGutterAdd cterm=none ctermbg=2
-hi GitGutterChange cterm=none ctermbg=4
-hi GitGutterChangeDelete cterm=none ctermbg=4
-hi GitGutterDelete cterm=none ctermfg=160 ctermbg=0
+hi GitGutterAdd guibg=#3c3836 guifg=green
+hi GitGutterChange guibg=#3c3836 guifg=white
+hi GitGutterChangeDelete guibg=#3c3836 guifg=white
+hi GitGutterDelete guibg=#3c3836 guifg=red
 hi Cursor guifg=NONE guibg=Green
-hi ColorColumn ctermbg=9
+hi ALEError gui=underline guisp=Red
+hi ALEWarning gui=underline guisp=Orange
+hi ALEErrorSign guifg=Red guibg=#3c3836
+hi ALEWarningSign guifg=Orange guibg=#3c3836
 hi TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 
 "KEYMAPPINGS====================================================================
@@ -213,10 +215,12 @@ nnoremap fu :Ag <cword> <CR>
 noremap <leader>u :call GoToURL()<CR>
 nnoremap <space><space> za
 nnoremap gr :GoReferrers<CR>
+nnoremap gi :GoInfo<CR>
 noremap <space>d :NERDTreeToggle<CR>
 noremap <leader>e :ALENext<cr>
 noremap <leader>cf :let @+ = expand("%")<cr>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
+inoremap jk <esc>
 xnoremap p pgvy
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>
