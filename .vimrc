@@ -3,7 +3,8 @@ call plug#begin('~/.vim/bundle')
 Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
 Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
+" Plug 'nsf/gocode', {'rtp': 'vim/', 'do':'~/.vim/bundle/gocode/vim/symlink.sh'}
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'alvan/vim-closetag'
@@ -15,7 +16,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'ervandew/supertab'
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
 Plug 'gioele/vim-autoswap'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/go-to-file.vim'
@@ -27,6 +28,7 @@ Plug 'rking/ag.vim'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'rstacruz/vim-hyperstyle'
 Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'ternjs/tern_for_vim'
@@ -35,6 +37,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
@@ -55,7 +58,7 @@ set colorcolumn=80
 set cursorline
 set expandtab               " tab with spaces
 set exrc
-set foldlevelstart=2
+set foldlevelstart=5
 set hlsearch
 set ignorecase
 set iminsert=0
@@ -82,6 +85,9 @@ syntax enable
 
 "GLOBALS========================================================================
 let g:rustfmt_autosave = 1
+let g:go_fmt_command = "goimports"
+let g:go_version_warning = 0
+let g:go_echo_command_info = 0
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe
 let g:NERDDefaultAlign = 'left'
@@ -106,12 +112,13 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_javascript_eslint_use_global = 0
 let g:ale_lint_on_enter = 1
-let g:ale_linters = { 'javascript': ['eslint'], 'go': ['gofmt', 'govet', 'golint'] }
+let g:ale_linters = { 'javascript': ['eslint'], 'go': ['govet', 'golint']}
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 let g:ag_working_path_mode = 'r'
 let g:ctrlp_match_func = { 'match': 'CustomMatch' }
 let g:path_to_matcher = '/usr/local/bin/matcher'
+let g:rustfmt_autosave = 1
 let g:tern_request_timeout = 5
 let g:tern_show_argument_hints='on_hold'
 let g:ycm_add_preview_to_completeopt=0
@@ -245,4 +252,8 @@ augroup configgroup
     autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
     autocmd VimEnter * wincmd p
     autocmd bufwritepost .vimrc source $MYVIMRC
+    au FileType rust nmap gd <Plug>(rust-def)
+    au FileType rust nmap gs <Plug>(rust-def-split)
+    au FileType rust nmap gx <Plug>(rust-def-vertical)
+    au FileType rust nmap <leader>gd <Plug>(rust-doc)
 augroup END
