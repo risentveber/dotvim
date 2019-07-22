@@ -5,6 +5,8 @@ Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
 " Plug 'Valloric/YouCompleteMe'
 " Plug 'nsf/gocode', {'rtp': 'vim/', 'do':'~/.vim/bundle/gocode/vim/symlink.sh'}
+Plug 'docker/docker'
+Plug 'slim-template/vim-slim', { 'for': 'slim'}
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'alvan/vim-closetag'
@@ -65,7 +67,7 @@ set iminsert=0
 set imsearch=0
 set lazyredraw
 set list
-set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,nbsp:~
+set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,nbsp:~,space:·
 set mouse=a
 set number
 set path+=$PWD/node_modules
@@ -88,6 +90,9 @@ let g:rustfmt_autosave = 1
 let g:go_fmt_command = "goimports"
 let g:go_version_warning = 0
 let g:go_echo_command_info = 0
+let g:ale_go_golangci_lint_package = 1
+let g:go_bin_path = $HOME."/go/bin/"
+let $GOPATH = $HOME."/go"
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe
 let g:NERDDefaultAlign = 'left'
@@ -112,7 +117,7 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_javascript_eslint_use_global = 0
 let g:ale_lint_on_enter = 1
-let g:ale_linters = { 'javascript': ['eslint'], 'go': ['govet', 'golint']}
+let g:ale_linters = { 'javascript': ['eslint'], 'go': ['golangci-lint']}
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 let g:ag_working_path_mode = 'r'
@@ -159,6 +164,12 @@ endfunction
 function! SetJSONOptions()
   set filetype=json
   set fdm=syntax
+endfunction
+
+function! SetYAMLOptions()
+  setlocal shiftwidth=2
+  setlocal softtabstop=2
+  setlocal tabstop=2
 endfunction
 
 function! GotoJump()
@@ -237,6 +248,7 @@ endif
 "COMMANDS=======================================================================
 command! W w
 command! Q q
+command! SW execute "w !sudo tee %" | e!
 command! FJ %!jq '.'
 
 "AUTOCOMMANDS===================================================================
@@ -245,6 +257,7 @@ augroup configgroup
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter .babelrc,.eslintrc,*.json call SetJSONOptions()
     autocmd FileType javascript noremap <buffer> gd :TernDef<CR>
+    autocmd FileType yaml call SetYAMLOptions()
     autocmd BufRead .tslintrc set filetype=json
     autocmd BufEnter *.jade set syntax=pug
     autocmd BufEnter *.sol set syntax=solidity
