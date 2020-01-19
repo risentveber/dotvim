@@ -3,8 +3,16 @@ call plug#begin('~/.vim/bundle')
 Plug 'JamshedVesuna/vim-markdown-preview', { 'for': 'markdown' }
 Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
+Plug 'devjoe/vim-codequery'
+" Plug 'kamykn/spelunker.vim'
+Plug 'Quramy/tsuquyomi',  { 'for': 'typescript', 'do': 'yarn' }
+
+" Plug 'vim-scripts/cscope.vim'
 " Plug 'Valloric/YouCompleteMe'
 " Plug 'nsf/gocode', {'rtp': 'vim/', 'do':'~/.vim/bundle/gocode/vim/symlink.sh'}
+Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'sebdah/vim-delve'
+Plug 'towolf/vim-helm'
 Plug 'docker/docker'
 Plug 'slim-template/vim-slim', { 'for': 'slim'}
 Plug 'airblade/vim-gitgutter'
@@ -18,7 +26,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'digitaltoad/vim-pug', { 'for': 'pug' }
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'ervandew/supertab'
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go' } ", 'do': ':GoUpdateBinaries' }
 Plug 'gioele/vim-autoswap'
 Plug 'honza/vim-snippets'
 Plug 'iamcco/go-to-file.vim'
@@ -34,10 +42,12 @@ Plug 'racer-rust/vim-racer', { 'for': 'rust' }
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'ternjs/tern_for_vim'
+Plug 'dart-lang/dart-vim-plugin'
 Plug 'tomlion/vim-solidity', { 'for': 'solidity' }
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'kevinhui/vim-docker-tools'
 Plug 'tpope/vim-surround'
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 Plug 'udalov/kotlin-vim', { 'for': 'kotlin' }
@@ -53,6 +63,7 @@ filetype plugin indent on    " required
 let NERDTreeShowHidden=1
 runtime ftplugin/man.vim
 set autoindent              " copy indent from previous line
+set autoread
 set background=dark
 set backspace=indent,eol,start " backspace over everything in insert mode
 set clipboard=unnamed
@@ -60,6 +71,9 @@ set colorcolumn=80
 set cursorline
 set expandtab               " tab with spaces
 set exrc
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+		  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+		  \,sm:block-blinkwait175-blinkoff150-blinkon175
 set foldlevelstart=5
 set hlsearch
 set ignorecase
@@ -83,6 +97,8 @@ set suffixesadd=.js,.ts,.jsx
 set tabstop=4
 set termguicolors
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+" set spellfile=~/.vim/spell/en.utf-8.add
+" set cscopequickfix=s-,c-,d-,i-,t-,e-
 syntax enable
 
 "GLOBALS========================================================================
@@ -91,8 +107,11 @@ let g:go_fmt_command = "goimports"
 let g:go_version_warning = 0
 let g:go_echo_command_info = 0
 let g:ale_go_golangci_lint_package = 1
+" let g:go_def_mode = 'godef'
 let g:go_bin_path = $HOME."/go/bin/"
 let $GOPATH = $HOME."/go"
+let g:ale_echo_msg_format = '%linter% says %s'
+let g:loaded_python_provider = 0
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe
 let g:NERDDefaultAlign = 'left'
@@ -101,6 +120,8 @@ let g:NERDTreeDirArrows = 1
 let g:NERDTreeIgnore = ['.DS_Store','\.swp$','.git$']
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeStatusline = 'NERD'
+let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '/usr/local/bin/python2'
 " let g:NERDTreeStatusline = '%{ getcwd() }'
 let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsEditSplit='vertical'
@@ -117,7 +138,7 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = { 'javascript': ['eslint'] }
 let g:ale_javascript_eslint_use_global = 0
 let g:ale_lint_on_enter = 1
-let g:ale_linters = { 'javascript': ['eslint'], 'go': ['golangci-lint']}
+let g:ale_linters = { 'javascript': ['eslint'], 'go': ['golangci-lint'], 'proto': ['prototoollint']}
 let g:ale_sign_error = '⤫'
 let g:ale_sign_warning = '⚠'
 let g:ag_working_path_mode = 'r'
@@ -134,7 +155,6 @@ let g:ycm_semantic_triggers = { 'css,less,stylus': [ 're!^\s{2}', 're!:\s+' ] }
 let vim_markdown_preview_browser='Google Chrome'
 let vim_markdown_preview_github=1
 let vim_markdown_preview_hotkey='<C-m>'
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
@@ -234,12 +254,14 @@ noremap <leader>u :call GoToURL()<CR>
 nnoremap <space><space> za
 nnoremap gr :GoReferrers<CR>
 nnoremap gi :GoInfo<CR>
+nnoremap tt <C-w>b:q<CR>
 noremap <space>d :NERDTreeToggle<CR>
 noremap <leader>e :ALENext<cr>
 noremap <leader>cf :let @+ = expand("%")<cr>
 noremap edl :call setline('.', getline('.') . ' // eslint-disable-line')<CR>
 inoremap jk <esc>
 xnoremap p pgvy
+noremap <C-RightMouse> :GoReferrers<CR>
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>
     tnoremap <C-v><Esc> <Esc>
@@ -257,6 +279,7 @@ augroup configgroup
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter .babelrc,.eslintrc,*.json call SetJSONOptions()
     autocmd FileType javascript noremap <buffer> gd :TernDef<CR>
+    autocmd FileType typescript noremap <buffer> gd :TsuDefinition<CR>
     autocmd FileType yaml call SetYAMLOptions()
     autocmd BufRead .tslintrc set filetype=json
     autocmd BufEnter *.jade set syntax=pug
@@ -269,4 +292,5 @@ augroup configgroup
     au FileType rust nmap gs <Plug>(rust-def-split)
     au FileType rust nmap gx <Plug>(rust-def-vertical)
     au FileType rust nmap <leader>gd <Plug>(rust-doc)
+    " autocmd QuickFixCmdPost * cwindow
 augroup END
