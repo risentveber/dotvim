@@ -11,3 +11,13 @@ Fullscreen autostart
 ```bash
 alias vimr='vimr && ~/.vim/fullscreen.scpt'
 ```
+
+Install additionally brew/oh-my-zsh/oh-my-posh/iterm and:
+```bash
+brew install mitmproxy jq yq httpie shellcheck oh-my-posh ykman htop neovim colima telnet tree dive docker bat colordiff pup yamllint kcat
+```
+
+Disable noisy alert:
+```bash
+sudo defaults write /Library/Preferences/com.apple.security.smartcard UserPairing -bool NO
+```
